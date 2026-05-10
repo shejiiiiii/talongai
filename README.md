@@ -52,6 +52,8 @@ touchscreen dashboard built with Pygame.
 ---
 
 ## Project Structure
+
+```
 ├── main.py
 ├── config.py
 ├── blank_screen.py
@@ -79,6 +81,8 @@ touchscreen dashboard built with Pygame.
 │   └── eggplant_spectral_data_v5.csv   # Labeled spectral dataset (7,276 scans)
 │
 └── models/                  # Trained model outputs (git-ignored)
+```
+
 ---
 
 ## Switching the Inference Backend
