@@ -22,7 +22,7 @@ import tensorflow as tf
 
 from config import (
     DATA_FILE, MODEL_NAME,
-    EVAL_FOLDS, RANDOM_STATE,
+    EVAL_FOLDS, RANDOM_STATE, INPUT_SHAPE,
 )
 from src.dataset import remove_outlier_scans
 
@@ -106,7 +106,7 @@ def main():
 
     enc   = LabelEncoder()
     y     = enc.fit_transform(labels)
-    X_cnn = X.reshape(X.shape[0], 18, 1)
+    X_cnn = X.reshape(X.shape[0], INPUT_SHAPE[0], INPUT_SHAPE[1])
 
     model  = tf.keras.models.load_model(MODEL_NAME)
     folds  = build_folds(ids, labels)

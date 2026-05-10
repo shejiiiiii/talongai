@@ -25,7 +25,6 @@ from scipy.signal import savgol_filter
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.preprocessing import LabelEncoder
-from sklearn.utils import class_weight
 
 from config import (
     OUTPUT_FILE,
