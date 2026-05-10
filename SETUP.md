@@ -47,7 +47,8 @@ pip install sparkfun-qwiic-as7265x
 pip install sparkfun-qwiic-scmd
 ```
 
-> **Note:** TensorFlow on Raspberry Pi may require a specific wheel depending on your OS and architecture. If the standard install fails, try:
+> **Note:** TensorFlow on Raspberry Pi may require a specific wheel depending on
+> your OS and architecture. If the standard install fails, try:
 > ```bash
 > pip install tensorflow-aarch64
 > ```
@@ -81,8 +82,8 @@ i2cdetect -y 1
 
 ## 5. Configuration
 
-All hardware and model settings are in `config.py`. Review and adjust if your
-wiring differs from the defaults:
+All hardware, model, and data collection settings are in `config.py`. Review and
+adjust if your wiring or paths differ from the defaults:
 
 ```python
 I2C_BUS       = 1
@@ -91,9 +92,6 @@ SENSOR_0_PORT = 0
 SENSOR_1_PORT = 3
 MOTOR_SPEED   = 65
 ```
-
-For data collection settings (passes per eggplant, output file, etc.), edit
-`config_collect.py`.
 
 ---
 
@@ -104,16 +102,15 @@ then train:
 
 ```bash
 # CNN (default)
-python train.py
+python scripts/train.py
 
 # Random Forest (alternative)
-python train_rf.py
+python scripts/train_rf.py
 ```
 
-Trained models are saved to `data_collection/`. Update `MODEL_NAME` or
-`RF_MODEL_NAME` in `config.py` to point to your output file.
-
-To switch between CNN and RF inference, follow the comments in `analyzer.py`.
+Trained models are saved to `models/`. Update `MODEL_NAME` or `RF_MODEL_NAME`
+in `config.py` to point to your output file. To switch backends, set `USE_RF`
+in `config.py` to `True` or `False`.
 
 ---
 
@@ -122,18 +119,18 @@ To switch between CNN and RF inference, follow the comments in `analyzer.py`.
 **General collection (healthy + infested):**
 
 ```bash
-python collect.py
+python scripts/collect.py
 ```
 
 **Infested-only collection (calibration + auto-scan protocol):**
 
 ```bash
-python collect_infested.py
+python scripts/collect_infested.py
 ```
 
 Both scripts will prompt you for an eggplant ID and walk you through the
-scanning process. Output is appended to the CSV file defined in
-`config_collect.py` (`OUTPUT_FILE`).
+scanning process. Output is appended to the CSV file defined by `OUTPUT_FILE`
+in `config.py`.
 
 ---
 
@@ -142,13 +139,13 @@ scanning process. Output is appended to the CSV file defined in
 Run a 5-fold leave-one-eggplant-out evaluation:
 
 ```bash
-python evaluate_cnn.py
+python scripts/evaluate_cnn.py
 ```
 
 Run a quick SVM vs RF baseline comparison:
 
 ```bash
-python baseline.py
+python scripts/baseline.py
 ```
 
 ---
