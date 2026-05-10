@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TalongAI — User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #08070e;
+    --panel:    #100e1a;
+    --border:   #371e50;
+    --ep:       #6c2082;
+    --ep-dark:  #3c0a50;
+    --ep-lite:  #a54bc8;
+    --s0:       #aa55dc;
+    --s1:       #4bcdaf;
+    --healthy:  #48dc73;
+    --infested: #ff4444;
+    --warn:     #ffb230;
+    --gray:     #6e6987;
+    --gray-dk:  #1c192a;
+    --gray-md:  #2d283e;
+    --white:    #f0eef8;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ─────────────────────────────────── */
+  nav {
+    width: 240px;
+    min-width: 240px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 2rem;
+  }
+
+  .nav-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+  .nav-logo-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ep-lite);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .nav-logo-sub {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  nav a {
+    display: block;
+    padding: 0.45rem 1.25rem;
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 13px;
+    font-family: var(--mono);
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+  nav a:hover { color: var(--white); background: rgba(108,32,130,0.12); }
+  nav a.active { color: var(--ep-lite); border-left-color: var(--ep-lite); }
+  .nav-section-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--border);
+    padding: 1.2rem 1.25rem 0.3rem;
+    font-family: var(--mono);
+  }
+
+  /* ── Main content ────────────────────────────── */
+  main {
+    flex: 1;
+    max-width: 860px;
+    padding: 3rem 3.5rem;
+    overflow-x: hidden;
+  }
+
+  section { margin-bottom: 4rem; }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ep-lite);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.02em;
+  }
+  h3 {
+    font-size: 14px;
+    font-family: var(--mono);
+    color: var(--ep-lite);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 1.5rem 0 0.6rem;
+  }
+  p { color: rgba(240,238,248,0.78); margin-bottom: 0.9rem; }
+  strong { color: var(--white); font-weight: 600; }
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--gray-dk);
+    color: var(--ep-lite);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--gray-dk);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  pre code { background: none; border: none; padding: 0; color: #c8b8f0; font-size: 13px; }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 3rem;
+    padding: 2rem 0 0;
+  }
+  .hero-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--ep-dark);
+    color: var(--ep-lite);
+    border: 1px solid var(--ep);
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin-bottom: 1rem;
+  }
+  .hero p { font-size: 16px; max-width: 640px; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 1rem 0;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+  }
+  .card-icon { font-size: 22px; margin-bottom: 0.4rem; }
+  .card-label { font-family: var(--mono); font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+  .card-value { font-size: 14px; color: var(--white); font-weight: 600; margin-top: 2px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 14px; }
+  th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid rgba(55,30,80,0.4); color: rgba(240,238,248,0.8); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(108,32,130,0.06); }
+  td:first-child { font-family: var(--mono); font-size: 12px; color: var(--ep-lite); }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+  .badge-healthy  { background: rgba(72,220,115,0.12); color: var(--healthy); border: 1px solid rgba(72,220,115,0.3); }
+  .badge-infested { background: rgba(255,68,68,0.12);  color: var(--infested); border: 1px solid rgba(255,68,68,0.3); }
+  .badge-warn     { background: rgba(255,178,48,0.12); color: var(--warn);     border: 1px solid rgba(255,178,48,0.3); }
+  .badge-s0       { background: rgba(170,85,220,0.12); color: var(--s0);       border: 1px solid rgba(170,85,220,0.3); }
+  .badge-s1       { background: rgba(75,205,175,0.12); color: var(--s1);       border: 1px solid rgba(75,205,175,0.3); }
+
+  /* Key button */
+  .key {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--gray-md);
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    padding: 1px 8px;
+    color: var(--white);
+    min-width: 22px;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--gray-dk);
+    border-left: 3px solid var(--ep);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 14px;
+    color: rgba(240,238,248,0.8);
+  }
+  .callout.warn { border-color: var(--warn); }
+  .callout.ok   { border-color: var(--healthy); }
+  .callout strong { display: block; margin-bottom: 2px; }
+
+  /* Step list */
+  .steps { list-style: none; counter-reset: step; margin: 1rem 0; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+    align-items: flex-start;
+  }
+  .steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ep-dark);
+    border: 1px solid var(--ep);
+    color: var(--ep-lite);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3px;
+  }
+
+  /* ── CANVAS UI PREVIEW ───────────────────────── */
+  .ui-preview-wrapper {
+    background: var(--gray-dk);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .ui-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  .ui-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 5px 14px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--gray-md);
+    color: var(--white);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .ui-btn:hover { background: var(--ep-dark); border-color: var(--ep); }
+  .ui-btn.active { background: var(--ep-dark); border-color: var(--ep-lite); color: var(--ep-lite); }
+  .ui-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  canvas#dashCanvas {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    image-rendering: pixelated;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ────────────────────────────────── -->
+<nav id="sidebar">
+  <div class="nav-logo">
+    <div class="nav-logo-title">🍆 TalongAI</div>
+    <div class="nav-logo-sub">User Manual v3.0</div>
+  </div>
+
+  <div class="nav-section-label">Overview</div>
+  <a href="#overview">What is TalongAI?</a>
+  <a href="#hardware">Hardware</a>
+  <a href="#architecture">System Architecture</a>
+
+  <div class="nav-section-label">Getting Started</div>
+  <a href="#setup">Installation</a>
+  <a href="#boot">Booting the Device</a>
+
+  <div class="nav-section-label">Using the Device</div>
+  <a href="#ui-guide">Dashboard UI</a>
+  <a href="#scanning">Scanning Eggplants</a>
+  <a href="#results">Reading Results</a>
+  <a href="#controls">Macro Key Controls</a>
+
+  <div class="nav-section-label">Data & Training</div>
+  <a href="#collect">Data Collection</a>
+  <a href="#training">Training a Model</a>
+  <a href="#backends">CNN vs RF Backend</a>
+
+  <div class="nav-section-label">Reference</div>
+  <a href="#config">Configuration</a>
+  <a href="#troubleshoot">Troubleshooting</a>
+  <a href="#status-ref">Status Reference</a>
+</nav>
+
+<!-- ── MAIN ──────────────────────────────────── -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="overview">
+    <div class="hero-badge">User Manual v3.0</div>
+    <h1>TalongAI</h1>
+    <p>A Raspberry Pi embedded system that uses <strong>near-infrared (NIR) spectroscopy</strong> to detect eggplant fruit borer infestation — non-destructively and in real time.</p>
+    <p style="font-size:13px; color:var(--gray); font-family:var(--mono);">SE-CNN · AS7265x · 18-channel · 410–940 nm</p>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section>
+    <h2>What is TalongAI?</h2>
+    <p><em>Talong</em> is the Filipino word for eggplant. TalongAI is a non-destructive pest detection system — it can tell you whether an eggplant is infested with fruit borer <strong>without cutting it open</strong>. Two spectral sensors scan the eggplant as a motorized conveyor belt carries it through the detection chamber. A trained machine learning model then classifies each scan segment as <span class="badge badge-healthy">Healthy</span> or <span class="badge badge-infested">Infested</span>.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <div class="card-label">Sensors</div>
+        <div class="card-value">2 × AS7265x (18-channel NIR)</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-label">Model</div>
+        <div class="card-value">SE-CNN or Random Forest</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-label">Dataset</div>
+        <div class="card-value">7,276 labeled spectral scans</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📡</div>
+        <div class="card-label">Spectrum</div>
+        <div class="card-value">410 – 940 nm</div>
+      </div>
+    </div>
+
+    <p>The system processes two eggplants simultaneously — one under each sensor — and displays results on a <strong>1024×600 touchscreen dashboard</strong> built with Pygame. Results show a final verdict per eggplant based on majority voting across 5 scan segments.</p>
+  </section>
+
+  <!-- HARDWARE -->
+  <section id="hardware">
+    <h2>Hardware</h2>
+    <p>All components are connected via I²C through a TCA9548A multiplexer on a Raspberry Pi 4. The conveyor belt is driven by a SparkFun SCMD dual motor controller.</p>
+
+    <table>
+      <tr><th>Component</th><th>Details</th><th>Interface / Address</th></tr>
+      <tr><td>Raspberry Pi 4</td><td>4 GB RAM recommended — runs TF + Pygame in separate processes</td><td>—</td></tr>
+      <tr><td>AS7265x Sensor 0</td><td>SparkFun NIR Triad spectral sensor (18 channels)</td><td>I²C via MUX port 0</td></tr>
+      <tr><td>AS7265x Sensor 1</td><td>Second spectral sensor for the second eggplant lane</td><td>I²C via MUX port 3</td></tr>
+      <tr><td>TCA9548A MUX</td><td>I²C multiplexer — allows two identical-address sensors</td><td><code>0x70</code></td></tr>
+      <tr><td>SCMD Motor Driver</td><td>SparkFun serial-controlled motor driver for the conveyor</td><td>I²C default</td></tr>
+      <tr><td>1024×600 Display</td><td>HDMI touchscreen running the Pygame dashboard</td><td>HDMI</td></tr>
+      <tr><td>4-key Macro Pad</td><td>USB keyboard — power, scan, cancel, reset buttons</td><td>USB (<code>/dev/input/by-id/...</code>)</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <strong>⚠ Enable I²C before first use</strong>
+      Run <code>sudo raspi-config → Interface Options → I2C → Enable</code>, then verify with <code>i2cdetect -y 1</code>. You should see <code>0x70</code> for the MUX.
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <h2>System Architecture</h2>
+    <p>TalongAI runs as two separate OS processes to avoid GPU/OpenGL conflicts between TensorFlow and Pygame on ARM.</p>
+
+    <table>
+      <tr><th>Process</th><th>Role</th><th>Key Imports</th></tr>
+      <tr><td>Main Process</td><td>Loads the AI model, drives hardware, runs the scan loop</td><td>TensorFlow, smbus2, hardware drivers</td></tr>
+      <tr><td>Display Process (spawned)</td><td>Renders the Pygame dashboard; reads state from a queue</td><td>Pygame only — <strong>no TensorFlow</strong></td></tr>
+    </table>
+
+    <p>State updates flow from Main → Display via a <code>multiprocessing.Queue</code>. The display process drains this queue every frame and re-renders. Neither process can see the other's GPU context — this is intentional.</p>
+
+    <h3>File map</h3>
+    <table>
+      <tr><th>File</th><th>Purpose</th></tr>
+      <tr><td>main.py</td><td>Entry point — spawns display process, starts hardware thread</td></tr>
+      <tr><td>src/loop.py</td><td>Full scan lifecycle: init → home → warm-up → scan loop</td></tr>
+      <tr><td>src/analyzer.py</td><td>PestAnalyzer — CNN or RF inference + majority vote</td></tr>
+      <tr><td>src/model.py</td><td>SE-CNN architecture (TensorFlow/Keras)</td></tr>
+      <tr><td>src/dataset.py</td><td>Data loading, SNV normalization, augmentation</td></tr>
+      <tr><td>src/hardware.py</td><td>Multiplexer, SpectralSensor, Motor drivers</td></tr>
+      <tr><td>src/display.py</td><td>Pygame dashboard (boot screen + live dashboard)</td></tr>
+      <tr><td>macro_listener.py</td><td>Macro pad listener + power state management</td></tr>
+      <tr><td>config.py</td><td>All constants — edit this to change hardware/model settings</td></tr>
+    </table>
+  </section>
+
+  <!-- SETUP -->
+  <section id="setup">
+    <h2>Installation</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <strong>Clone the repository</strong>
+          <pre><code>git clone https://github.com/your-username/talong-ai.git
+cd talong-ai</code></pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Create a virtual environment</strong> (micromamba recommended on Pi)
+          <pre><code>micromamba create -n talong_stable python=3.10
+micromamba activate talong_stable</code></pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Install dependencies</strong>
+          <pre><code>pip install -r requirements.txt
+# On Pi ARM, replace tensorflow with:
+pip install tensorflow-aarch64</code></pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Enable I²C and verify hardware</strong>
+          <pre><code>sudo raspi-config      # Interface Options → I2C → Enable
+i2cdetect -y 1        # Should show 0x70</code></pre>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Train or provide a model</strong>, then place <code>.keras</code> or <code>.pkl</code> in the <code>models/</code> directory and update <code>MODEL_NAME</code> in <code>config.py</code>.
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Run the system</strong>
+          <pre><code>python main.py</code></pre>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- BOOT -->
+  <section id="boot">
+    <h2>Booting the Device</h2>
+    <p>When powered on, the system goes through the following stages:</p>
+    <table>
+      <tr><th>Stage</th><th>Display Shows</th><th>Duration</th></tr>
+      <tr><td>Boot screen</td><td>Logo, progress bar, loading messages</td><td>~5 s</td></tr>
+      <tr><td>Hardware init</td><td>Sensor status updates (INIT → READY / NOT CONNECTED)</td><td>~3 s</td></tr>
+      <tr><td>Sensor warm-up</td><td>"WARMING UP" on both panels</td><td>60 s</td></tr>
+      <tr><td>Ready</td><td>"SYSTEM READY" — waiting for scan trigger</td><td>Until key press</td></tr>
+    </table>
+    <div class="callout">
+      The 60-second warm-up is required for the AS7265x sensors to reach stable operating temperature. During this time, place the eggplants under the sensor chamber and close the lid.
+    </div>
+
+    <p>Power state is persisted in <code>state.json</code>. If the Pi reboots mid-session (e.g. power loss), it automatically relaunches <code>main.py</code> on next boot if the last state was <strong>ON</strong>.</p>
+
+    <h3>Auto-start with tmux (optional)</h3>
+    <pre><code># Start main app
+tmux new-session -d -s talongs 'python3 main.py'
+# Start macro listener in second session
+tmux new-session -d -s talongs_keys 'python3 macro_listener.py'</code></pre>
+  </section>
+
+  <!-- UI GUIDE -->
+  <section id="ui-guide">
+    <h2>Dashboard UI — Live Preview</h2>
+    <p>The touchscreen shows a 1024×600 dashboard with two sensor panels. Below is an interactive recreation of the actual device display. Use the buttons to switch between display states.</p>
+
+    <div class="ui-preview-wrapper">
+      <div class="ui-controls">
+        <span class="ui-label">State:</span>
+        <button class="ui-btn active" onclick="setUIState('ready')">System Ready</button>
+        <button class="ui-btn" onclick="setUIState('scanning')">Scanning</button>
+        <button class="ui-btn" onclick="setUIState('healthy')">Healthy Result</button>
+        <button class="ui-btn" onclick="setUIState('infested')">Infested Result</button>
+        <button class="ui-btn" onclick="setUIState('mixed')">Mixed Result</button>
+        <button class="ui-btn" onclick="setUIState('boot')">Boot Screen</button>
+      </div>
+      <canvas id="dashCanvas" width="1024" height="600"></canvas>
+    </div>
+
+    <h3>Panel anatomy</h3>
+    <table>
+      <tr><th>Element</th><th>Description</th></tr>
+      <tr><td>Panel header</td><td>Shows "EGGPLANT #1" or "#2" and the current phase badge (e.g. STANDBY, PART 2/5)</td></tr>
+      <tr><td>Eggplant logo</td><td>Animated — glows red with a tint overlay when INFESTED is detected</td></tr>
+      <tr><td>Status box</td><td>Large text showing the current status. Pulses orange while scanning.</td></tr>
+      <tr><td>Macro key bar</td><td>Bottom strip showing key 1–4 functions; one key "bounces" at a time</td></tr>
+    </table>
+  </section>
+
+  <!-- SCANNING -->
+  <section id="scanning">
+    <h2>Scanning Eggplants</h2>
+    <ol class="steps">
+      <li><div><strong>Wait for warm-up</strong> — both panels must show <span class="badge badge-s0">SYSTEM READY</span> before scanning.</div></li>
+      <li><div><strong>Place eggplants</strong> — one under each sensor opening (Sensor 0 = left lane, Sensor 1 = right lane). Close the chamber lid.</div></li>
+      <li><div><strong>Trigger a scan</strong> — press <span class="key">2</span> on the macro pad, or press <span class="key">Enter</span> on a keyboard.</div></li>
+      <li><div><strong>Watch the scan progress</strong> — the conveyor moves through 5 segments. Each panel shows <span class="badge badge-warn">SCANNING</span> while the segment is being read, then <span class="badge badge-warn">MOVING</span> between segments.</div></li>
+      <li><div><strong>Read the result</strong> — after all segments, the system processes the votes and displays <span class="badge badge-healthy">HEALTHY</span> or <span class="badge badge-infested">INFESTED</span>. The conveyor returns home automatically.</div></li>
+      <li><div><strong>Remove eggplants</strong>, then press <span class="key">2</span> again to scan the next batch.</div></li>
+    </ol>
+
+    <div class="callout warn">
+      <strong>⚠ Cancel a scan at any time</strong>
+      Press <span class="key">3</span> on the macro pad (or type <code>c</code> then Enter on keyboard). The conveyor will return home and the system goes back to READY.
+    </div>
+
+    <h3>How majority voting works</h3>
+    <p>Each eggplant is scanned across 5 conveyor segments. Each segment produces an independent <span class="badge badge-healthy">Healthy</span> or <span class="badge badge-infested">Infested</span> vote. If <strong>any segment votes Infested</strong>, the entire eggplant is flagged as <span class="badge badge-infested">Infested</span>. This conservative approach minimizes false negatives.</p>
+    <p>Low-confidence predictions (below <code>CONFIDENCE_THRESHOLD = 60%</code>) are flipped to the opposite label to reduce borderline false positives.</p>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results">
+    <h2>Reading Results</h2>
+    <table>
+      <tr><th>Display Status</th><th>Meaning</th></tr>
+      <tr><td><span class="badge badge-healthy">HEALTHY</span></td><td>All 5 segments voted Healthy. No infestation detected.</td></tr>
+      <tr><td><span class="badge badge-infested">INFESTED</span></td><td>At least one segment voted Infested. Do not ship.</td></tr>
+      <tr><td><span class="badge badge-warn">SCANNING</span></td><td>Currently reading the spectral sensor for this segment.</td></tr>
+      <tr><td><span class="badge badge-warn">MOVING</span></td><td>Conveyor advancing to the next segment position.</td></tr>
+      <tr><td><span class="badge badge-s0">SYSTEM READY</span></td><td>Warm-up complete. Waiting for a scan trigger.</td></tr>
+      <tr><td><span class="badge badge-s1">WARMING UP</span></td><td>Sensor stabilization period (60 s). Do not scan yet.</td></tr>
+      <tr><td>NOT CONNECTED</td><td>Sensor did not respond during initialization.</td></tr>
+    </table>
+  </section>
+
+  <!-- CONTROLS -->
+  <section id="controls">
+    <h2>Macro Key Controls</h2>
+    <table>
+      <tr><th>Key</th><th>Action</th><th>Notes</th></tr>
+      <tr><td><span class="key">1</span> KEY_A</td><td>Power toggle</td><td>OFF→ON launches the app; ON→OFF shuts down the Pi</td></tr>
+      <tr><td><span class="key">2</span> KEY_B</td><td>Trigger scan / Scan again</td><td>Same as pressing Enter on a keyboard</td></tr>
+      <tr><td><span class="key">3</span> KEY_C</td><td>Cancel current scan</td><td>Returns conveyor home; goes back to READY</td></tr>
+      <tr><td><span class="key">4</span> KEY_D</td><td>Graceful reset</td><td>Quits and relaunches <code>main.py</code></td></tr>
+    </table>
+
+    <p>When using a keyboard directly (SSH or physical), the mappings are:</p>
+    <table>
+      <tr><th>Key</th><th>Action</th></tr>
+      <tr><td><span class="key">Enter</span></td><td>Trigger scan</td></tr>
+      <tr><td><code>c</code> + <span class="key">Enter</span></td><td>Cancel scan</td></tr>
+      <tr><td><code>q</code> + <span class="key">Enter</span></td><td>Quit the program</td></tr>
+      <tr><td><span class="key">Esc</span></td><td>Close the display (development only)</td></tr>
+    </table>
+  </section>
+
+  <!-- DATA COLLECTION -->
+  <section id="collect">
+    <h2>Data Collection</h2>
+    <p>Two scripts handle data collection. Both append rows to the CSV defined as <code>OUTPUT_FILE</code> in <code>config.py</code>.</p>
+
+    <h3>General collection — collect.py</h3>
+    <p>Use this for both healthy and infested eggplants. You specify which of the 3 conveyor segments face the infested area per rotation.</p>
+    <pre><code>python scripts/collect.py</code></pre>
+    <ol class="steps">
+      <li>Enter <code>H</code> for Healthy or <code>I</code> for Infested.</li>
+      <li>Enter the Eggplant ID (e.g. <code>H01</code>, <code>I03</code>).</li>
+      <li>For infested: specify which segments face the damage (e.g. <code>1 2</code> or <code>all</code>).</li>
+      <li>The script runs multiple passes per rotation, rotating the eggplant ~45° between rotations.</li>
+    </ol>
+
+    <h3>Infested-only collection — collect_infested.py</h3>
+    <p>Uses a calibration-then-auto-scan protocol for higher throughput on infested specimens.</p>
+    <pre><code>python scripts/collect_infested.py</code></pre>
+    <ol class="steps">
+      <li><strong>Run 1 (calibration)</strong>: scan all 3 segments, manually confirm which are infested.</li>
+      <li><strong>Runs 2–20 (auto)</strong>: only the confirmed infested segments are scanned automatically.</li>
+    </ol>
+
+    <div class="callout ok">
+      <strong>Protocol tip:</strong> Both sensors save data simultaneously (suffix <code>_S0</code> and <code>_S1</code>), effectively doubling your dataset per scan.
+    </div>
+
+    <h3>CSV format</h3>
+    <table>
+      <tr><th>Column</th><th>Content</th></tr>
+      <tr><td>Label</td><td><code>Healthy</code> or <code>Infested</code></td></tr>
+      <tr><td>Eggplant_ID</td><td>e.g. <code>H01_S0</code>, <code>I03_S1</code></td></tr>
+      <tr><td>Timestamp</td><td>ISO datetime of scan</td></tr>
+      <tr><td>Ch_1 … Ch_18</td><td>Calibrated spectral values (µW/cm²)</td></tr>
+    </table>
+  </section>
+
+  <!-- TRAINING -->
+  <section id="training">
+    <h2>Training a Model</h2>
+
+    <h3>SE-CNN (default)</h3>
+    <pre><code>python scripts/train.py</code></pre>
+    <p>Trains the Squeeze-and-Excitation 1D CNN on the dataset. Uses grouped train/test split (by eggplant ID), augmentation (noise + scaling), class weights, label smoothing, early stopping, and LR reduction on plateau. Output: <code>models/eggplant_pest_model_v5.keras</code></p>
+
+    <h3>Random Forest (alternative)</h3>
+    <pre><code>python scripts/train_rf.py</code></pre>
+    <p>Trains a 500-tree Random Forest with pairwise channel ratio features (18 → 39 features). No augmentation. Output: <code>models/eggplant_pest_rf_v4.pkl</code></p>
+
+    <h3>Evaluation</h3>
+    <pre><code># 5-fold leave-one-eggplant-out cross-validation
+python scripts/evaluate_cnn.py
+
+# SVM vs RF baseline comparison
+python scripts/baseline.py</code></pre>
+
+    <h3>Preprocessing pipeline</h3>
+    <table>
+      <tr><th>Step</th><th>Method</th><th>Purpose</th></tr>
+      <tr><td>1. Smoothing</td><td>Savitzky-Golay (window=3, poly=2)</td><td>Remove sensor noise</td></tr>
+      <tr><td>2. Normalization</td><td>Standard Normal Variate (SNV)</td><td>Correct for scattering / distance variation</td></tr>
+      <tr><td>3. Outlier removal</td><td>Z-score per eggplant group (threshold=2.5σ)</td><td>Drop anomalous scans</td></tr>
+      <tr><td>4. Augmentation (CNN only)</td><td>Gaussian noise + multiplicative scaling</td><td>Regularize against sensor variation</td></tr>
+    </table>
+  </section>
+
+  <!-- BACKENDS -->
+  <section id="backends">
+    <h2>CNN vs RF Backend</h2>
+    <p>Switch backends by changing one flag in <code>config.py</code>:</p>
+    <pre><code># config.py
+USE_RF = False   # False = SE-CNN (default)
+USE_RF = True    # True  = Random Forest</code></pre>
+    <p>No code changes needed elsewhere — <code>src/analyzer.py</code> reads this flag and loads the appropriate model.</p>
+
+    <table>
+      <tr><th>Property</th><th>SE-CNN</th><th>Random Forest</th></tr>
+      <tr><td>Input shape</td><td>(18, 1) — treats channels as a time series</td><td>(39,) — 18 channels + 21 ratio features</td></tr>
+      <tr><td>Interpretability</td><td>Low — attention via SE blocks</td><td>High — feature importance rankings</td></tr>
+      <tr><td>Training time</td><td>~5–15 min (200 epochs, early stop)</td><td>~30 s</td></tr>
+      <tr><td>Augmentation</td><td>Yes (noise + scale copies)</td><td>No</td></tr>
+      <tr><td>Label smoothing</td><td>Yes (0.1)</td><td>No</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <strong>⚠ RF preprocessing mismatch:</strong> Training applies SNV <em>after</em> adding ratio features; inference applies SNV <em>before</em>. This is a known inconsistency noted in the codebase — unify both when retraining from scratch.
+    </div>
+  </section>
+
+  <!-- CONFIG -->
+  <section id="config">
+    <h2>Configuration Reference</h2>
+    <p>All settings live in <code>config.py</code>. Never hardcode values in other scripts.</p>
+
+    <h3>Hardware</h3>
+    <table>
+      <tr><th>Constant</th><th>Default</th><th>Description</th></tr>
+      <tr><td>I2C_BUS</td><td>1</td><td>I²C bus number on the Pi</td></tr>
+      <tr><td>MUX_ADDR</td><td>0x70</td><td>TCA9548A multiplexer I²C address</td></tr>
+      <tr><td>SENSOR_0_PORT</td><td>0</td><td>MUX port for the first AS7265x</td></tr>
+      <tr><td>SENSOR_1_PORT</td><td>3</td><td>MUX port for the second AS7265x</td></tr>
+      <tr><td>MOTOR_SPEED</td><td>65</td><td>Conveyor speed during inference (0–255)</td></tr>
+      <tr><td>MOVE_DURATION</td><td>0.6 s</td><td>Time to advance one conveyor segment</td></tr>
+      <tr><td>RETURN_DURATION</td><td>4.3 s</td><td>Time to return belt to home position</td></tr>
+    </table>
+
+    <h3>Inference</h3>
+    <table>
+      <tr><th>Constant</th><th>Default</th><th>Description</th></tr>
+      <tr><td>CONFIDENCE_THRESHOLD</td><td>60%</td><td>Predictions below this are flipped</td></tr>
+      <tr><td>NUM_SEGMENTS</td><td>5</td><td>Number of conveyor passes per scan</td></tr>
+      <tr><td>USE_RF</td><td>False</td><td>Switch to Random Forest when True</td></tr>
+    </table>
+
+    <h3>Training</h3>
+    <table>
+      <tr><th>Constant</th><th>Default</th><th>Description</th></tr>
+      <tr><td>EPOCHS</td><td>200</td><td>Maximum training epochs (early stop applies)</td></tr>
+      <tr><td>BATCH_SIZE</td><td>32</td><td>Training batch size</td></tr>
+      <tr><td>LEARNING_RATE</td><td>0.001</td><td>Adam optimizer initial LR</td></tr>
+      <tr><td>Z_THRESHOLD</td><td>2.5</td><td>σ cutoff for per-eggplant outlier removal</td></tr>
+    </table>
+  </section>
+
+  <!-- TROUBLESHOOT -->
+  <section id="troubleshoot">
+    <h2>Troubleshooting</h2>
+
+    <h3>Sensors not detected</h3>
+    <div class="callout">Run <code>i2cdetect -y 1</code> and confirm <code>0x70</code> is visible. Check MUX port numbers in <code>config.py</code> match the physical wiring. The system degrades gracefully — it will still run if one sensor is missing.</div>
+
+    <h3>TensorFlow import errors on ARM</h3>
+    <div class="callout">Standard TF may not have an ARM wheel. Try: <code>pip install tensorflow-aarch64</code>. Ensure you are in the correct micromamba/venv environment.</div>
+
+    <h3>Pygame display fails / black screen</h3>
+    <div class="callout">Ensure <code>DISPLAY=:0</code> is exported before running. If running headless, a display server must be active. The variable is set at the top of <code>main.py</code> automatically.</div>
+
+    <h3>Macro pad not found</h3>
+    <div class="callout">Run <code>ls /dev/input/by-id/</code> to find the device path. Update the path in <code>macro_listener.py</code> if it differs. The script falls back to auto-detecting any keyboard with KEY_A and KEY_B.</div>
+
+    <h3>Model load failure</h3>
+    <div class="callout">Both panels show "MODEL FAIL". The display still runs. Check that the model file path in <code>config.py</code> (<code>MODEL_NAME</code> or <code>RF_MODEL_NAME</code>) is correct and that the file exists in <code>models/</code>.</div>
+
+    <h3>Conveyor doesn't stop at home</h3>
+    <div class="callout warn"><strong>Adjust RETURN_DURATION</strong> in <code>config.py</code>. A brief braking pulse is applied at the end of <code>return_home()</code> to prevent coasting. Increase the duration if the belt overshoots.</div>
+  </section>
+
+  <!-- STATUS REFERENCE -->
+  <section id="status-ref">
+    <h2>Status Reference</h2>
+    <table>
+      <tr><th>Status</th><th>Color</th><th>Phase</th></tr>
+      <tr><td>HEALTHY</td><td><span class="badge badge-healthy">green</span></td><td>DONE</td></tr>
+      <tr><td>INFESTED</td><td><span class="badge badge-infested">red</span></td><td>DONE</td></tr>
+      <tr><td>SCANNING</td><td><span class="badge badge-warn">amber (pulsing)</span></td><td>PART n/5</td></tr>
+      <tr><td>PROCESSING</td><td><span class="badge badge-warn">amber (pulsing)</span></td><td>AI ACTIVE</td></tr>
+      <tr><td>MOVING</td><td>gray</td><td>MOVING</td></tr>
+      <tr><td>RETURNING</td><td>gray</td><td>RETURNING</td></tr>
+      <tr><td>HOMING</td><td>gray</td><td>CALIBRATING</td></tr>
+      <tr><td>WARMING UP</td><td><span class="badge badge-s0">purple</span></td><td>STANDBY</td></tr>
+      <tr><td>SYSTEM READY</td><td><span class="badge badge-healthy">green</span></td><td>STANDBY</td></tr>
+      <tr><td>NOT CONNECTED</td><td>gray</td><td>any</td></tr>
+      <tr><td>ERROR</td><td><span class="badge badge-infested">red</span></td><td>any</td></tr>
+    </table>
+  </section>
+
+</main>
+
+<!-- ── CANVAS DASHBOARD SCRIPT ──────────────────── -->
+<script>
+const C = {
+  bg:     '#08070e', panel: '#100e1a', border:'#371e50',
+  ep:     '#6c2082', epd:  '#3c0a50', epl:  '#a54bc8',
+  stem:   '#37581c', leaf: '#48822a', worm: '#cda576', wormdk:'#9b6c44',
+  white:  '#f0eef8', gray: '#6e6987', grayd:'#1c192a', graym:'#2d283e',
+  s0:     '#aa55dc', s1:   '#4bcdaf',
+  healthy:'#48dc73', infested:'#ff4444', warn:'#ffb230',
+};
+
+const W = 1024, H = 600;
+const canvas = document.getElementById('dashCanvas');
+const ctx = canvas.getContext('2d');
+let tick = 0;
+let uiState = 'ready';
+let bootProgress = 0;
+let animFrame;
+
+function lerp(a,b,t){ return a + (b-a)*t; }
+function lerpCol(a,b,t){
+  const pa=hexToRgb(a), pb=hexToRgb(b);
+  return `rgb(${Math.round(lerp(pa[0],pb[0],t))},${Math.round(lerp(pa[1],pb[1],t))},${Math.round(lerp(pa[2],pb[2],t))})`;
+}
+function hexToRgb(h){
+  const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+  return [r,g,b];
+}
+function rgba(hex,a){const [r,g,b]=hexToRgb(hex);return `rgba(${r},${g},${b},${a})`;}
+
+function rrect(x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r); ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r); ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r); ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}
+}
+
+/* ── Eggplant logo ─────────────────────────────── */
+function drawLogo(cx,cy,s,tint){
+  const bw=Math.round(70*s), bh=Math.round(115*s);
+  for(let i=0;i<6;i++){
+    const t=i/5;
+    const rgb=hexToRgb(C.epd).map((v,idx)=>Math.round(v+(hexToRgb(C.epl)[idx]-v)*t*0.55));
+    ctx.fillStyle=`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    const ew=Math.max(4,bw-i*Math.round(10*s));
+    const eh=Math.max(4,bh-i*Math.round(8*s));
+    ctx.beginPath();
+    ctx.ellipse(cx-Math.round(4*s*t),cy+Math.round(8*s),ew/2,eh/2,0,0,Math.PI*2);
+    ctx.fill();
+  }
+  if(tint){
+    ctx.fillStyle=rgba(tint,0.15);
+    ctx.beginPath();
+    ctx.ellipse(cx,cy+Math.round(8*s),(bw+10)/2,(bh+10)/2,0,0,Math.PI*2);
+    ctx.fill();
+  }
+  // stem
+  const sx=cx-Math.round(2*s);
+  const sbot=cy-bh/2+Math.round(8*s)+Math.round(6*s);
+  const stop2=cy-bh/2+Math.round(8*s)-Math.round(22*s);
+  ctx.strokeStyle=C.stem; ctx.lineWidth=Math.max(1,Math.round(6*s));
+  ctx.beginPath(); ctx.moveTo(sx,sbot); ctx.lineTo(sx+Math.round(3*s),stop2); ctx.stroke();
+  // leaves
+  const lcx=cx, lcy=cy-bh/2+Math.round(8*s);
+  [[-42,22],[0,17],[42,20],[-72,14],[72,14]].forEach(([deg,len])=>{
+    const a=(deg-90)*Math.PI/180;
+    const lx=lcx+Math.cos(a)*len*s, ly=lcy+Math.sin(a)*len*s;
+    ctx.strokeStyle=C.leaf; ctx.lineWidth=Math.max(1,Math.round(4*s));
+    ctx.beginPath(); ctx.moveTo(lcx,lcy); ctx.lineTo(lx,ly); ctx.stroke();
+    ctx.fillStyle=C.leaf; ctx.beginPath(); ctx.arc(lx,ly,Math.max(1,Math.round(3*s)),0,Math.PI*2); ctx.fill();
+  });
+  // worm
+  const wx=cx+Math.round(25*s), wy=cy-Math.round(10*s);
+  const segs=6;
+  for(let i=0;i<segs;i++){
+    const t2=i/(segs-1);
+    const segx=wx+Math.cos(t2*0.9)*28*s*t2;
+    const segy=wy-Math.sin(t2*1.2)*18*s*t2;
+    const r=Math.max(2,Math.round((8-i*0.8)*s));
+    ctx.fillStyle=C.wormdk; ctx.beginPath(); ctx.arc(segx+1,segy+2,r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=C.worm;   ctx.beginPath(); ctx.arc(segx,segy,r,0,Math.PI*2); ctx.fill();
+    if(i<segs-1){
+      const nx=wx+Math.cos((i+1)/(segs-1)*0.9)*28*s*(i+1)/(segs-1);
+      const ny=wy-Math.sin((i+1)/(segs-1)*1.2)*18*s*(i+1)/(segs-1);
+      ctx.strokeStyle=C.wormdk; ctx.lineWidth=Math.max(1,Math.round(3*s));
+      ctx.beginPath(); ctx.moveTo(segx,segy); ctx.lineTo(nx,ny); ctx.stroke();
+    }
+  }
+  // worm head
+  const hx=wx+Math.cos(0.9)*28*s, hy=wy-Math.sin(1.2)*18*s;
+  const hr=Math.max(3,Math.round(9*s));
+  ctx.fillStyle=C.wormdk; ctx.beginPath(); ctx.arc(hx+1,hy+2,hr,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=C.worm;   ctx.beginPath(); ctx.arc(hx,hy,hr,0,Math.PI*2); ctx.fill();
+  const er=Math.max(1,Math.round(2*s));
+  ctx.fillStyle='#1c1208'; ctx.beginPath(); ctx.arc(hx-3*s,hy-3*s,er,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#fff';    ctx.beginPath(); ctx.arc(hx-3*s-1,hy-3*s-1,Math.max(1,er-1),0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#4b2308'; ctx.lineWidth=Math.max(1,Math.round(2*s));
+  ctx.beginPath(); ctx.arc(hx,hy+2,3.5*s,Math.PI,0); ctx.stroke();
+}
+
+/* ── Macro key bar ─────────────────────────────── */
+const KEYS=[['1','Turn OFF'],['2','SCAN again'],['3','STOP scan'],['4','RESET']];
+function drawMacroBar(x,y,w,h,accent){
+  const bounceI=Math.round(Math.abs(Math.sin(tick*0.5))*3);
+  KEYS.forEach(([n,lbl],i)=>{
+    const ks=Math.min(32,h-6), kx=x+w-4*(ks+6)+i*(ks+6), ky=y+(h-ks)/2;
+    const isActive=(i===bounceI);
+    if(isActive){
+      const pulse=0.7+0.3*Math.sin(tick*6);
+      ctx.fillStyle=rgba(accent,0.3*pulse); rrect(kx-3,ky-3,ks+6,ks+6,9,ctx.fillStyle);
+      rrect(kx,ky,ks,ks,7,accent);
+      ctx.fillStyle='#fff';
+    } else {
+      rrect(kx,ky,ks,ks,7,C.graym,C.gray);
+      ctx.fillStyle=C.gray;
+    }
+    ctx.font=`bold ${Math.round(14*(w/300))}px "Space Mono",monospace`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(n,kx+ks/2,ky+ks/2);
+  });
+  ctx.font=`${Math.round(11*(w/300))}px "Space Mono",monospace`;
+  ctx.fillStyle=C.gray; ctx.textAlign='left'; ctx.textBaseline='middle';
+  KEYS.forEach(([n,lbl],i)=>{
+    ctx.fillText(`${n} – ${lbl}`,x+6,y+h/4*(i+0.5));
+  });
+}
+
+/* ── Status meta ───────────────────────────────── */
+function statusMeta(s){
+  const u=s.toUpperCase();
+  if(u.includes('INFESTED')) return {col:C.infested,tint:'#ff3333',lbl:'INFESTED'};
+  if(u.includes('HEALTHY') || u.includes('READY')) return {col:C.healthy,tint:null,lbl:s.toUpperCase()};
+  if(u.includes('SCANNING')||u.includes('PROCESSING')) return {col:C.warn,tint:null,lbl:s.toUpperCase()};
+  if(u.includes('WARMING')) return {col:C.s0,tint:null,lbl:'WARMING UP'};
+  if(u.includes('LOADING')) return {col:C.s0,tint:null,lbl:'LOADING'};
+  return {col:C.gray,tint:null,lbl:s.toUpperCase().slice(0,14)};
+}
+
+/* ── Sensor panel ──────────────────────────────── */
+function drawPanel(x,y,w,h,name,accent,phase,status){
+  const meta=statusMeta(status);
+  // background
+  rrect(x,y,w,h,16,C.panel,C.border);
+  if(meta.tint){ctx.fillStyle=rgba(meta.tint,0.06);rrect(x,y,w,h,16,ctx.fillStyle);}
+
+  // top gradient stripe
+  const grd=ctx.createLinearGradient(x+16,y,x+w-16,y);
+  grd.addColorStop(0,rgba(accent,0)); grd.addColorStop(0.5,rgba(accent,0.7)); grd.addColorStop(1,rgba(accent,0));
+  ctx.fillStyle=grd; ctx.fillRect(x+16,y,w-32,3);
+
+  const HDR=46, MACRO=84;
+  const innerH=h-HDR-MACRO-4;
+  const logoH=Math.round(innerH*0.55);
+
+  // header
+  ctx.fillStyle=C.white; ctx.font=`bold 18px "Space Mono",monospace`;
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText(name,x+16,y+HDR/2);
+
+  // phase badge
+  ctx.font=`12px "Space Mono",monospace`;
+  const pw=ctx.measureText(phase).width+16;
+  const ph=20, px2=x+w-pw-12, py2=y+(HDR-ph)/2;
+  rrect(px2,py2,pw,ph,5,C.grayd,C.graym);
+  ctx.fillStyle=C.gray; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(phase.toUpperCase().slice(0,14),px2+pw/2,py2+ph/2);
+
+  ctx.strokeStyle=C.grayd; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(x+12,y+HDR-1); ctx.lineTo(x+w-12,y+HDR-1); ctx.stroke();
+
+  // logo area
+  const logoTop=y+HDR+4, lcy=logoTop+logoH/2;
+  const s=Math.min(1.6,(logoH-10)/135);
+  drawLogo(x+w/2,lcy,s,meta.tint);
+
+  // status box
+  const sbp=12, sbx=x+sbp, sby=y+HDR+logoH+8;
+  const sbw=w-sbp*2, sbh=h-HDR-logoH-MACRO-16;
+  let boxBg=C.grayd;
+  if(meta.col===C.infested) boxBg='#200505';
+  else if(meta.col===C.warn) boxBg='#1e1505';
+  rrect(sbx,sby,sbw,sbh,10,boxBg);
+
+  if(meta.col===C.warn||meta.col===C.infested){
+    const pulse=0.5+0.5*Math.sin(tick*4);
+    ctx.fillStyle=rgba(meta.col,0.08*pulse);
+    rrect(sbx,sby,sbw,sbh,10,ctx.fillStyle);
+  }
+
+  ctx.fillStyle=meta.col;
+  ctx.font=`bold 26px "Space Mono",monospace`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(meta.lbl,sbx+sbw/2,sby+sbh/2);
+
+  // underline
+  const ulw=Math.min(ctx.measureText(meta.lbl).width+20,sbw-16);
+  const grd2=ctx.createLinearGradient(sbx+sbw/2-ulw/2,0,sbx+sbw/2+ulw/2,0);
+  grd2.addColorStop(0,rgba(meta.col,0)); grd2.addColorStop(0.5,rgba(meta.col,0.7)); grd2.addColorStop(1,rgba(meta.col,0));
+  ctx.fillStyle=grd2; ctx.fillRect(sbx+sbw/2-ulw/2,sby+sbh-6,ulw,2);
+
+  // macro divider
+  const mTop=y+h-MACRO;
+  ctx.strokeStyle=C.grayd; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(x+12,mTop-1); ctx.lineTo(x+w-12,mTop-1); ctx.stroke();
+  drawMacroBar(x+8,mTop+2,w-16,MACRO-6,accent);
+}
+
+/* ── Boot screen ───────────────────────────────── */
+const BOOT_MSGS=[
+  [0.10,"Initializing display driver..."],
+  [0.22,"Mounting I2C bus..."],
+  [0.34,"Connecting to MUX (0x70)..."],
+  [0.46,"Spectral Sensor 0  ->  OK"],
+  [0.57,"Spectral Sensor 1  ->  OK"],
+  [0.66,"Motor driver  ->  ENABLED"],
+  [0.75,"Loading TensorFlow runtime..."],
+  [0.85,"Loading CNN model weights..."],
+  [0.93,"Sensor warm-up in progress..."],
+  [1.00,"System ready."],
+];
+
+function drawBoot(){
+  ctx.fillStyle='#05040a'; ctx.fillRect(0,0,W,H);
+  const cx=W/2;
+
+  // title
+  ctx.fillStyle=lerpCol(C.epl,'#ffffff',0.45);
+  ctx.font=`bold 42px "Space Mono",monospace`;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('TALONG  AI',cx,30);
+
+  // subtitle
+  ctx.fillStyle=C.gray; ctx.font=`15px "Sora",sans-serif`;
+  ctx.fillText('Eggplant Pest Detection System',cx,82);
+
+  // separator
+  const sepW=260;
+  const grd=ctx.createLinearGradient(cx-sepW/2,0,cx+sepW/2,0);
+  grd.addColorStop(0,rgba(C.epl,0)); grd.addColorStop(0.5,rgba(C.epl,0.5)); grd.addColorStop(1,rgba(C.epl,0));
+  ctx.fillStyle=grd; ctx.fillRect(cx-sepW/2,106,sepW,1);
+
+  // logo
+  drawLogo(cx,285,1.55,null);
+
+  // progress bar
+  const bw=340, bh=8, bx=cx-bw/2, by=508;
+  rrect(bx,by,bw,bh,4,C.grayd);
+  const fw=Math.max(0,Math.round(bw*bootProgress));
+  if(fw>2){
+    const grd2=ctx.createLinearGradient(bx,0,bx+bw,0);
+    grd2.addColorStop(0,C.ep); grd2.addColorStop(1,C.epl);
+    ctx.fillStyle=grd2; rrect(bx,by,fw,bh,4,grd2);
+  }
+
+  // current boot message
+  let curMsg='';
+  for(const [t,m] of BOOT_MSGS) if(bootProgress>=t) curMsg=m;
+  if(curMsg){
+    ctx.fillStyle=C.epl; ctx.font=`13px "Space Mono",monospace`;
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillText('->  '+curMsg,cx,524);
+  }
+
+  // version
+  ctx.fillStyle=rgba(C.gray,0.5); ctx.font=`12px "Space Mono",monospace`;
+  ctx.fillText('v3.0  |  SE-CNN',cx,572);
+}
+
+/* ── Dashboard ─────────────────────────────────── */
+function getStateData(){
+  const states={
+    ready:    {phase:'STANDBY',  s0:'SYSTEM READY', s1:'SYSTEM READY'},
+    scanning: {phase:'PART 3/5', s0:'SCANNING...',  s1:'SCANNING...'},
+    healthy:  {phase:'DONE',     s0:'HEALTHY',       s1:'HEALTHY'},
+    infested: {phase:'DONE',     s0:'INFESTED',      s1:'INFESTED'},
+    mixed:    {phase:'DONE',     s0:'HEALTHY',       s1:'INFESTED'},
+  };
+  return states[uiState]||states.ready;
+}
+
+function drawDash(){
+  ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+
+  // background dots
+  for(let gx=0;gx<W;gx+=28){
+    for(let gy=58;gy<H;gy+=28){
+      const a=0.05+0.03*Math.sin(tick*0.6+gx*0.04+gy*0.04);
+      ctx.fillStyle=rgba(C.ep,a); ctx.beginPath(); ctx.arc(gx,gy,1,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  // top bar
+  const barH=50;
+  rrect(0,0,W,barH,0,C.panel);
+  ctx.strokeStyle=C.border; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,barH); ctx.lineTo(W,barH); ctx.stroke();
+
+  // mini logo
+  drawLogo(28,28,0.3,null);
+
+  ctx.fillStyle=C.white; ctx.font=`bold 18px "Space Mono",monospace`;
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('TALONG AI  -  PEST DETECTION',62,25);
+
+  // clock
+  const now=new Date();
+  const ts=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  ctx.fillStyle=C.gray; ctx.font=`14px "Space Mono",monospace`;
+  ctx.textAlign='right'; ctx.fillText(ts,W-14,25);
+
+  // animated bar line
+  const pulse=0.5+0.5*Math.sin(tick*2.5);
+  const grdBar=ctx.createLinearGradient(0,0,W,0);
+  grdBar.addColorStop(0,lerpCol(C.ep,C.s0,pulse*0.12));
+  grdBar.addColorStop(1,lerpCol(C.ep,C.s1,pulse*0.12));
+  ctx.fillStyle=grdBar; ctx.fillRect(0,barH-2,W,2);
+
+  const mg=12, top=barH+mg;
+  const pw=(W-mg*3)/2, ph=H-top-mg;
+
+  const {phase,s0,s1}=getStateData();
+  drawPanel(mg,top,pw,ph,'EGGPLANT  #1',C.s0,phase,s0);
+  drawPanel(mg*2+pw,top,pw,ph,'EGGPLANT  #2',C.s1,phase,s1);
+}
+
+/* ── Main render loop ──────────────────────────── */
+function renderLoop(){
+  tick+=0.016;
+  if(uiState==='boot'){
+    bootProgress=Math.min(1,(bootProgress+0.004));
+    drawBoot();
+  } else {
+    drawDash();
+  }
+  animFrame=requestAnimationFrame(renderLoop);
+}
+
+function setUIState(s){
+  document.querySelectorAll('.ui-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.toLowerCase().replace(' ','').includes(s)||
+      b.getAttribute('onclick').includes(s));
+  });
+  if(s==='boot') bootProgress=0;
+  uiState=s;
+}
+
+renderLoop();
+
+/* ── Sidebar active link tracking ─────────────── */
+const sections=[...document.querySelectorAll('section')];
+const navLinks=[...document.querySelectorAll('nav a')];
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(s.getBoundingClientRect().top<160) cur=s.id;});
+  navLinks.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+ 
