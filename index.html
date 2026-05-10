@@ -820,7 +820,7 @@ function rrect(x,y,w,h,r,fill,stroke){
   if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}
 }
 
-/* ── Eggplant logo ─────────────────────────────── */
+/* -- Eggplant logo ------------------------------- */
 function drawLogo(cx,cy,s,tint){
   const bw=Math.round(70*s), bh=Math.round(115*s);
   for(let i=0;i<6;i++){
@@ -883,7 +883,7 @@ function drawLogo(cx,cy,s,tint){
   ctx.beginPath(); ctx.arc(hx,hy+2,3.5*s,Math.PI,0); ctx.stroke();
 }
 
-/* ── Macro key bar ─────────────────────────────── */
+/* -- Macro key bar ------------------------------- */
 const KEYS=[['1','Turn OFF'],['2','SCAN again'],['3','STOP scan'],['4','RESET']];
 function drawMacroBar(x,y,w,h,accent){
   const bounceI=Math.round(Math.abs(Math.sin(tick*0.5))*3);
@@ -906,11 +906,11 @@ function drawMacroBar(x,y,w,h,accent){
   ctx.font=`${Math.round(11*(w/300))}px "Space Mono",monospace`;
   ctx.fillStyle=C.gray; ctx.textAlign='left'; ctx.textBaseline='middle';
   KEYS.forEach(([n,lbl],i)=>{
-    ctx.fillText(`${n} – ${lbl}`,x+6,y+h/4*(i+0.5));
+    ctx.fillText(`${n} - ${lbl}`,x+6,y+h/4*(i+0.5));
   });
 }
 
-/* ── Status meta ───────────────────────────────── */
+/* -- Status meta --------------------------------- */
 function statusMeta(s){
   const u=s.toUpperCase();
   if(u.includes('INFESTED')) return {col:C.infested,tint:'#ff3333',lbl:'INFESTED'};
@@ -921,7 +921,7 @@ function statusMeta(s){
   return {col:C.gray,tint:null,lbl:s.toUpperCase().slice(0,14)};
 }
 
-/* ── Sensor panel ──────────────────────────────── */
+/* -- Sensor panel -------------------------------- */
 function drawPanel(x,y,w,h,name,accent,phase,status){
   const meta=statusMeta(status);
   // background
@@ -990,7 +990,7 @@ function drawPanel(x,y,w,h,name,accent,phase,status){
   drawMacroBar(x+8,mTop+2,w-16,MACRO-6,accent);
 }
 
-/* ── Boot screen ───────────────────────────────── */
+/* -- Boot screen --------------------------------- */
 const BOOT_MSGS=[
   [0.10,"Initializing display driver..."],
   [0.22,"Mounting I2C bus..."],
@@ -1051,7 +1051,7 @@ function drawBoot(){
   ctx.fillText('v3.0  |  SE-CNN',cx,572);
 }
 
-/* ── Dashboard ─────────────────────────────────── */
+/* -- Dashboard ----------------------------------- */
 function getStateData(){
   const states={
     ready:    {phase:'STANDBY',  s0:'SYSTEM READY', s1:'SYSTEM READY'},
@@ -1108,14 +1108,21 @@ function drawDash(){
   drawPanel(mg*2+pw,top,pw,ph,'EGGPLANT  #2',C.s1,phase,s1);
 }
 
-/* ── Main render loop ──────────────────────────── */
+/* -- Main render loop ---------------------------- */
 function renderLoop(){
-  tick+=0.016;
-  if(uiState==='boot'){
-    bootProgress=Math.min(1,(bootProgress+0.004));
-    drawBoot();
-  } else {
-    drawDash();
+  try {
+    tick+=0.016;
+    if(uiState==='boot'){
+      bootProgress=Math.min(1,(bootProgress+0.004));
+      drawBoot();
+    } else {
+      drawDash();
+    }
+  } catch(e) {
+    ctx.fillStyle='#08070e'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#ff4444'; ctx.font='bold 14px monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('Render error: '+e.message, W/2, H/2);
   }
   animFrame=requestAnimationFrame(renderLoop);
 }
@@ -1131,7 +1138,7 @@ function setUIState(s){
 
 renderLoop();
 
-/* ── Sidebar active link tracking ─────────────── */
+/* -- Sidebar active link tracking --------------- */
 const sections=[...document.querySelectorAll('section')];
 const navLinks=[...document.querySelectorAll('nav a')];
 window.addEventListener('scroll',()=>{
@@ -1139,4 +1146,9 @@ window.addEventListener('scroll',()=>{
   sections.forEach(s=>{if(s.getBoundingClientRect().top<160) cur=s.id;});
   navLinks.forEach(a=>{
     a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
- 
+  });
+},{passive:true});
+</script>
+
+</body>
+</html>
