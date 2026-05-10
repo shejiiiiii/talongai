@@ -1,0 +1,44 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+micromamba/
+
+# Trained models (large binary files)
+*.keras
+*.pkl
+*.h5
+
+# Numpy saved arrays
+*.npy
+
+# Dataset (optional — remove this line if you want the CSV tracked)
+eggplant_spectral_data_v*.csv
+
+# State file (device-specific, resets on boot)
+state.json
+
+# Logs & temp files
+*.log
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
