@@ -24,9 +24,6 @@ micromamba/
 # Numpy saved arrays
 *.npy
 
-# Dataset (optional — remove this line if you want the CSV tracked)
-eggplant_spectral_data_v*.csv
-
 # State file (device-specific, resets on boot)
 state.json
 
@@ -42,3 +39,11 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Others
+bin/
+lib/
+lib64
+pyvenv.cfg
+talong.service
+start_system.sh
